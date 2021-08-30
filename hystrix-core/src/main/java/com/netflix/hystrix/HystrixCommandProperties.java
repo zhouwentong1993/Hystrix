@@ -35,6 +35,7 @@ import com.netflix.hystrix.util.HystrixRollingPercentile;
  * <p>
  * Default implementation of methods uses Archaius (https://github.com/Netflix/archaius)
  */
+// Hystrix 默认配置集合
 public abstract class HystrixCommandProperties {
     private static final Logger logger = LoggerFactory.getLogger(HystrixCommandProperties.class);
 

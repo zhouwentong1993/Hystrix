@@ -135,7 +135,9 @@ public interface HystrixCircuitBreaker {
      * @ExcludeFromJavadoc
      * @ThreadSafe
      */
-    /* package */class HystrixCircuitBreakerImpl implements HystrixCircuitBreaker {
+    /* package */
+        // 断路器实现
+    class HystrixCircuitBreakerImpl implements HystrixCircuitBreaker {
         private final HystrixCommandProperties properties;
         private final HystrixCommandMetrics metrics;
 
@@ -144,9 +146,9 @@ public interface HystrixCircuitBreaker {
             CLOSED, OPEN, HALF_OPEN;
         }
 
-        private final AtomicReference<Status> status = new AtomicReference<Status>(Status.CLOSED);
+        private final AtomicReference<Status> status = new AtomicReference<>(Status.CLOSED);
         private final AtomicLong circuitOpened = new AtomicLong(-1);
-        private final AtomicReference<Subscription> activeSubscription = new AtomicReference<Subscription>(null);
+        private final AtomicReference<Subscription> activeSubscription = new AtomicReference<>(null);
 
         protected HystrixCircuitBreakerImpl(HystrixCommandKey key, HystrixCommandGroupKey commandGroup, final HystrixCommandProperties properties, HystrixCommandMetrics metrics) {
             this.properties = properties;
@@ -192,6 +194,7 @@ public interface HystrixCircuitBreaker {
                                     // if it was open, we need to wait for sleep window to elapse
                                 } else {
                                     // our failure rate is too high, we need to set the state to OPEN
+                                    // 失败比例太高了，需要将断路器打开。
                                     if (status.compareAndSet(Status.CLOSED, Status.OPEN)) {
                                         circuitOpened.set(System.currentTimeMillis());
                                     }
@@ -232,6 +235,7 @@ public interface HystrixCircuitBreaker {
             if (properties.circuitBreakerForceClosed().get()) {
                 return false;
             }
+            // 设置的是断路器被打开时的时间戳。如果存在该时间戳，则代表断路器被打开了。
             return circuitOpened.get() >= 0;
         }
 
@@ -246,6 +250,7 @@ public interface HystrixCircuitBreaker {
             if (circuitOpened.get() == -1) {
                 return true;
             } else {
+                // 半开状态，也不开。
                 if (status.get().equals(Status.HALF_OPEN)) {
                     return false;
                 } else {
@@ -254,9 +259,11 @@ public interface HystrixCircuitBreaker {
             }
         }
 
+        // 如果当前时间距离断路器打开时间超过了五秒钟，则允许通过。
         private boolean isAfterSleepWindow() {
             final long circuitOpenTime = circuitOpened.get();
             final long currentTime = System.currentTimeMillis();
+            // 默认 5 秒钟
             final long sleepWindowTime = properties.circuitBreakerSleepWindowInMilliseconds().get();
             return currentTime > circuitOpenTime + sleepWindowTime;
         }
