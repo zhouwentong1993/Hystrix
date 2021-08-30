@@ -44,6 +44,7 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * For more information see the Github Wiki: https://github.com/Netflix/Hystrix/wiki/Configuration#wiki-ThreadPool and https://github.com/Netflix/Hystrix/wiki/How-it-Works#wiki-Isolation
  */
+// 线程池配置
 public interface HystrixThreadPool {
 
     /**

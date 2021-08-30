@@ -15,13 +15,13 @@
  */
 package com.netflix.hystrix;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
-
 import com.netflix.hystrix.HystrixCommandMetrics.HealthCounts;
 import rx.Subscriber;
 import rx.Subscription;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Circuit-breaker logic that is hooked into {@link HystrixCommand} execution and will stop allowing executions if failures have gone past the defined threshold.
@@ -139,6 +139,7 @@ public interface HystrixCircuitBreaker {
         private final HystrixCommandProperties properties;
         private final HystrixCommandMetrics metrics;
 
+        // 断路器的三种状态
         enum Status {
             CLOSED, OPEN, HALF_OPEN;
         }
