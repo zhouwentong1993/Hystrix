@@ -160,7 +160,9 @@ public interface HystrixThreadPool {
      * @ExcludeFromJavadoc
      * @ThreadSafe
      */
-    /* package */static class HystrixThreadPoolDefault implements HystrixThreadPool {
+    /* package */
+        // 默认线程池实现
+    static class HystrixThreadPoolDefault implements HystrixThreadPool {
         private static final Logger logger = LoggerFactory.getLogger(HystrixThreadPoolDefault.class);
 
         private final HystrixThreadPoolProperties properties;
@@ -193,12 +195,7 @@ public interface HystrixThreadPool {
         @Override
         public Scheduler getScheduler() {
             //by default, interrupt underlying threads on timeout
-            return getScheduler(new Func0<Boolean>() {
-                @Override
-                public Boolean call() {
-                    return true;
-                }
-            });
+            return getScheduler(() -> true);
         }
 
         @Override
