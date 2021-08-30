@@ -35,7 +35,7 @@ import com.netflix.hystrix.strategy.concurrency.HystrixRequestContext;
  */
 public class HystrixCommandDemo {
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         new HystrixCommandDemo().startDemo();
     }
 

@@ -139,6 +139,7 @@ public abstract class HystrixCommand<R> extends AbstractCommand<R> implements Hy
      * Most of the args will revert to a valid default if 'null' is passed in.
      */
     /* package for testing */
+    // 全构造函数，配置 GroupKey、线程池、信号量、策略
     HystrixCommand(HystrixCommandGroupKey group, HystrixCommandKey key, HystrixThreadPoolKey threadPoolKey, HystrixCircuitBreaker circuitBreaker, HystrixThreadPool threadPool,
             HystrixCommandProperties.Setter commandPropertiesDefaults, HystrixThreadPoolProperties.Setter threadPoolPropertiesDefaults,
             HystrixCommandMetrics metrics, TryableSemaphore fallbackSemaphore, TryableSemaphore executionSemaphore,
@@ -337,6 +338,8 @@ public abstract class HystrixCommand<R> extends AbstractCommand<R> implements Hy
      * @throws IllegalStateException
      *             if invoked more than once
      */
+    // 同步执行
+    @Override
     public R execute() {
         try {
             return queue().get();
@@ -367,6 +370,7 @@ public abstract class HystrixCommand<R> extends AbstractCommand<R> implements Hy
      * @throws IllegalStateException
      *             if invoked more than once
      */
+    @Override
     public Future<R> queue() {
         /*
          * The Future returned by Observable.toBlocking().toFuture() does not implement the
